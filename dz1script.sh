@@ -1,7 +1,8 @@
 #!/bin/bash
 
 function deleteCASH() {
-    rm -f ../linux*
+    rm -f ../linux-u*
+    rm -f ../linux-*
 }
 
 function makeCONFIG() {
@@ -34,7 +35,7 @@ function compile_kernel() {
 }
 
 ################ START SCRIPT ####################
-deleteCASH
+#deleteCASH
 makeCONFIG
 
 # Отключаем ненужные модули
