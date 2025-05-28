@@ -1,8 +1,9 @@
 #/bin/bash
 
 function disable(){
-
+echo ""
 echo "ОТКЛЮЧЕНИЕ модуля $1"
+echo ""
 ./scripts/config --disable "$1"
 }
 
