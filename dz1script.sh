@@ -1,41 +1,43 @@
 #!/bin/bash
 
-function makeCONFIG(){
-    echo "старт"
-    echo "      создания"
-    echo "               конфига !"
-rm ./.config
-make -j$(nproc) defconfig
+function deleteCASH() {
+    rm -f ../linux*
+}
+
+function makeCONFIG() {
+    echo "Создание конфига..."
+    rm -f .config
+    make defconfig
 }
 
 function disable() {
-    echo ""
-    echo "ОТКЛЮЧЕНИЕ модуля $1"
-    echo ""
+    echo -e "\nОТКЛЮЧЕНИЕ модуля $1\n"
     ./scripts/config --disable "$1"
 }
 
 function enable() {
-    echo ""
-    echo "ВКЛЮЧЕНИЕ модуля $1"
-    echo ""
+    echo -e "\nВКЛЮЧЕНИЕ модуля $1\n"
     ./scripts/config --enable "$1"
 }
 
 function compile_kernel() {
-    echo "!!!!!!!!!!!!!!!!!!!!!!"
-    echo "СТАРТ КОМПИЛЯЦИИ ЯДРА"
-    echo "!!!!!!!!!!ПРОВЕРЬ CONFIG!!!!!!!!!!!"
-    echo "       vim .config"
-    echo "     а после введи - "
-    echo ""
+    echo "Проверьте конфиг:"
+    echo "vim .config"
+    
+    # Гарантированно устанавливаем нужные значения
+    ./scripts/config --set-val CONFIG_DEBUG_INFO y
+    ./scripts/config --set-val CONFIG_DEBUG_INFO_NONE n
+    ./scripts/config --set-val CONFIG_DEBUG_INFO_DWARF4 y
+    make olddefconfig    
+    echo "введи для компиляции "
     echo "time make -j$(nproc) deb-pkg 2>error.log"
-    echo ""
 }
 
 ################ START SCRIPT ####################
+deleteCASH
 makeCONFIG
 
+# Отключаем ненужные модули
 disable "SECURITY_SELINUX"
 disable "SECURITY_SMACK"
 disable "SECURITY_TOMOYO"
@@ -54,7 +56,7 @@ disable "BPF_EVENTS"
 disable "CONFIG_DEBUG_INFO_NONE"
 disable "BPFILTER"
 
-enable "CONFIG_DEBUG_INFO"
+# Включаем нужные модули
 enable "DEBUG_FS"
 enable "FTRACE"
 enable "FUNCTION_TRACER"
@@ -70,10 +72,25 @@ enable "KASAN_INLINE"
 enable "KASAN_EXTRA_INFO"
 enable "KGDB"
 enable "KGDB_SERIAL_CONSOLE"
-enable "DEBUG_INFO"
 enable "SERIAL_CONSOLE"
 enable "CONSOLE_POLL"
 enable "KPROBES"
 enable "KPROBE_EVENT"
 
+# Явно устанавливаем параметры отладки
+./scripts/config --set-val CONFIG_DEBUG_INFO y
+./scripts/config --set-val CONFIG_DEBUG_INFO_NONE n
+./scripts/config --set-val CONFIG_DEBUG_INFO_DWARF4 y
+
+# Проверяем перед компиляцией
+echo "Проверка конфига ДО :"
+grep "CONFIG_DEBUG_INFO" .config
+grep "CONFIG_DEBUG_INFO_NONE" .config
+grep "CONFIG_DEBUG_INFO_DWARF4" .config
+
 compile_kernel
+
+echo "Проверка конфига ПОСЛЕ :"
+grep "CONFIG_DEBUG_INFO" .config
+grep "CONFIG_DEBUG_INFO_NONE" .config
+grep "CONFIG_DEBUG_INFO_DWARF4" .config
