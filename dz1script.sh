@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm ./.config
+
 function disable() {
     echo ""
     echo "ОТКЛЮЧЕНИЕ модуля $1"
@@ -37,7 +39,6 @@ disable "BPF"
 disable "BPF_SYSCALL"
 disable "BPF_JIT"
 disable "BPF_EVENTS"
-disable "DEBUG_INFO_NONE"
 disable "CONFIG_DEBUG_INFO_NONE"
 disable "BPFILTER"
 
