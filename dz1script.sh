@@ -1,6 +1,12 @@
 #!/bin/bash
 
+function makeCONFIG(){
+    echo "старт"
+    echo "      создания"
+    echo "               конфига !"
 rm ./.config
+make -j$(nproc) defconfig
+}
 
 function disable() {
     echo ""
@@ -24,6 +30,8 @@ function compile_kernel() {
 }
 
 ################ START SCRIPT ####################
+makeCONFIG
+
 disable "SECURITY_SELINUX"
 disable "SECURITY_SMACK"
 disable "SECURITY_TOMOYO"
