@@ -15,6 +15,9 @@ echo ""
 }
 
 function make(){
+echo "!!!!!!!!!!!!!!!!!!!!!!"
+echo "СТАРТ КОСПИЛЯЦИИ ЯДРА"
+echo "!!!!!!!!!!!!!!!!!!!!!!"
 time make -j$(nproc) deb-pkg 2>error.log
 }
 
