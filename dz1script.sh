@@ -1,17 +1,17 @@
-#/bin/bash
+#!/bin/bash
 
-function disable(){
-echo ""
-echo "ОТКЛЮЧЕНИЕ модуля $1"
-echo ""
-./scripts/config --disable "$1"
+function disable() {
+    echo ""
+    echo "ОТКЛЮЧЕНИЕ модуля $1"
+    echo ""
+    ./scripts/config --disable "$1"
 }
 
-function enable(){
-echo ""
-echo "ВКЛЮЧЕНИЕ модуля $1"
-echo ""
-./scripts/config --enable "$1"
+function enable() {
+    echo ""
+    echo "ВКЛЮЧЕНИЕ модуля $1"
+    echo ""
+    ./scripts/config --enable "$1"
 }
 
 function compile_kernel() {
@@ -21,7 +21,7 @@ function compile_kernel() {
     time make -j$(nproc) deb-pkg 2>error.log
 }
 
-################START SCRIPT####################
+################ START SCRIPT ####################
 disable "SECURITY_SELINUX"
 disable "SECURITY_SMACK"
 disable "SECURITY_TOMOYO"
@@ -41,46 +41,26 @@ disable "DEBUG_INFO_NONE"
 disable "CONFIG_DEBUG_INFO_NONE"
 disable "BPFILTER"
 
-# Включение DEBUG_INFO
-enable CONFIG_DEBUG_INFO
+enable "CONFIG_DEBUG_INFO"
+enable "DEBUG_FS"
+enable "FTRACE"
+enable "FUNCTION_TRACER"
+enable "DYNAMIC_FTRACE"
+enable "FUNCTION_GRAPH_TRACER"
+enable "STACK_TRACER"
+enable "KUNIT"
+enable "KUNIT_TEST"
+enable "KASAN"
+enable "STACKTRACE"
+enable "KASAN_GENERIC"
+enable "KASAN_INLINE"
+enable "KASAN_EXTRA_INFO"
+enable "KGDB"
+enable "KGDB_SERIAL_CONSOLE"
+enable "DEBUG_INFO"
+enable "SERIAL_CONSOLE"
+enable "CONSOLE_POLL"
+enable "KPROBES"
+enable "KPROBE_EVENT"
 
-# Включение DEBUG_FS и отладочных функций
-echo "Включение DEBUG_FS и отладочных функций"
-enable DEBUG_FS
-
-# Включение ftrace и связанных функций
-echo "Включение ftrace и связанных функций"
-enable FTRACE
-enable FUNCTION_TRACER
-enable DYNAMIC_FTRACE
-enable FUNCTION_GRAPH_TRACER
-enable STACK_TRACER
-
-# Включение KUnit
-echo "Включение KUnit"
-enable KUNIT
-enable KUNIT_TEST
-
-# Включение KASAN
-echo "Включение KASAN"
-enable KASAN
-enable STACKTRACE
-enable KASAN_GENERIC
-enable KASAN_INLINE
-enable KASAN_EXTRA_INFO
-
-# Включение KGDB
-echo "Включение KGDB"
-enable KGDB
-enable KGDB_SERIAL_CONSOLE
-enable DEBUG_INFO
-enable SERIAL_CONSOLE
-enable CONSOLE_POLL
-
-# Включение Kprobes
-echo "Включение Kprobes"
-enable KPROBES
-enable KPROBE_EVENT
-
-#компилируем ядро
 compile_kernel
