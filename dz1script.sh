@@ -14,11 +14,11 @@ echo ""
 ./scripts/config --enable "$1"
 }
 
-function make(){
-echo "!!!!!!!!!!!!!!!!!!!!!!"
-echo "СТАРТ КОСПИЛЯЦИИ ЯДРА"
-echo "!!!!!!!!!!!!!!!!!!!!!!"
-time make -j$(nproc) deb-pkg 2>error.log
+function compile_kernel() {
+    echo "!!!!!!!!!!!!!!!!!!!!!!"
+    echo "СТАРТ КОМПИЛЯЦИИ ЯДРА"
+    echo "!!!!!!!!!!!!!!!!!!!!!!"
+    time make -j$(nproc) deb-pkg 2>error.log
 }
 
 ################START SCRIPT####################
@@ -83,4 +83,4 @@ enable KPROBES
 enable KPROBE_EVENT
 
 #компилируем ядро
-make
+compile_kernel
