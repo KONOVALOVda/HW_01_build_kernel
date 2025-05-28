@@ -25,8 +25,8 @@ function enable() {
 function compile_kernel() {
     echo "!!!!!!!!!!!!!!!!!!!!!!"
     echo "СТАРТ КОМПИЛЯЦИИ ЯДРА"
-    echo "!!!!!!!!!!!!!!!!!!!!!!"
-    echo "          ПРОВЕРЬ .config"
+    echo "!!!!!!!!!!ПРОВЕРЬ CONFIG!!!!!!!!!!!"
+    echo "       vim .config"
     echo "     а после введи - "
     echo ""
     echo "time make -j$(nproc) deb-pkg 2>error.log"
