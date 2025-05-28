@@ -26,7 +26,11 @@ function compile_kernel() {
     echo "!!!!!!!!!!!!!!!!!!!!!!"
     echo "СТАРТ КОМПИЛЯЦИИ ЯДРА"
     echo "!!!!!!!!!!!!!!!!!!!!!!"
-    time make -j$(nproc) deb-pkg 2>error.log
+    echo "          ПРОВЕРЬ .config"
+    echo "     а после введи - "
+    echo ""
+    echo "time make -j$(nproc) deb-pkg 2>error.log"
+    echo ""
 }
 
 ################ START SCRIPT ####################
